@@ -3,7 +3,7 @@ const resultImage = document.getElementById("resultImage");
 const errorMessage = document.getElementById("errorMessage");
 const myMsg = document.getElementById("myMsg");
 const downloadLink = document.getElementById("downloadLink");
-const inputMood = document.getElementById("Mood");
+const inputmode = document.getElementById("mode");
 const inputKey = document.getElementById("key");
 const encBtn= document.getElementById("encBtn");
 const decBtn= document.getElementById("decBtn");
@@ -27,25 +27,18 @@ const showresult=()=>{
     imgContainer.style.cssText="opacity:1;";
 }
 
-const encryptionHandler=(e)=> {
-  
+const encryptionHandler=()=> {
   hideresult();
   clearMessages();
-
   key= inputKey.value;
-  Mood=inputMood.value
-
+  mode=inputmode.value
   if (key.length > 16) {
-    myMsg.innerHTML = "Your Key should < 16";
+    myMsg.innerHTML = "Your Key should be less than 16";
     myMsg.style.display="block";
     showresult();
     downloadLink.style.display="none";
     return;
   }
-
-
-
-
   const file = myImg.files[0];
   if (!file) {
     myMsg.innerHTML = "There is No Image to Encrypt!";
@@ -55,14 +48,13 @@ const encryptionHandler=(e)=> {
     return;
   }
 
+
   const reader = new FileReader();
   reader.readAsDataURL(file)
-
   reader.onload = function (event) {
     const imageData = event.target.result;
-
     let encrypted;
-    switch (Mood) {
+    switch (mode) {
       case "ECB":
         encrypted = CryptoJS.AES.encrypt(imageData, key, { mode: CryptoJS.mode.ECB });
         break;
@@ -72,27 +64,22 @@ const encryptionHandler=(e)=> {
       case "CTR":
         encrypted = CryptoJS.AES.encrypt(imageData, key, { mode: CryptoJS.mode.CTR });
         break;
-    
       default:
         break;
     }
-
     const result = encrypted.toString();
-
     const myBlob = new Blob([result], { type: "image/png" });
     const url = URL.createObjectURL(myBlob);
-
     downloadLink.href = url;
     downloadLink.setAttribute("download", "encImg.png");
-    
     succMsg.innerHTML="Image Encrypted Successfully <i class='fa-solid fa-user-secret'></i>"
     succMsg.style.display="block"
+    showresult();
 
 
     // resultImage.src = result;
     // resultImage.style.display = "block";
 
-    showresult();
   };
 
 }
@@ -103,7 +90,7 @@ const decryptImage=()=> {
   clearMessages();
 
   key= inputKey.value;
-  Mood=inputMood.value;
+  mode=inputmode.value;
   
   const file = myImg.files[0];
 
@@ -117,13 +104,10 @@ const decryptImage=()=> {
 
   const reader = new FileReader();
   reader.readAsText(file);
-
   reader.onload = function (event) {
-
     const encryptedData = event.target.result;
-
     let decrypted;
-    switch (Mood) {
+    switch (mode) {
       case "ECB":
         decrypted = CryptoJS.AES.decrypt(encryptedData, key, { mode: CryptoJS.mode.ECB });
         break;
@@ -136,12 +120,9 @@ const decryptImage=()=> {
       default:
         break;
     }
-
     const decryptedData = decrypted.toString(CryptoJS.enc.Utf8);
-
     const isImageData = /^data:image\/\w+;base64,/;
     isImageData.test(decryptedData);
-
     if (!isImageData) {
       myMsg.innerHTML = "Oh! sorry Your Image Is Invalid.";
       myMsg.style.display = "block";
@@ -149,10 +130,8 @@ const decryptImage=()=> {
       downloadLink.style.display="none";
       return;
     }
-
     resultImage.src = decryptedData;
     resultImage.style.display = "block";
-
     downloadLink.href = resultImage.src;
     downloadLink.setAttribute("download", "decImg.png");
     succMsg.style.display="none"
