@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Image Encryption & Decryption</title>
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>  
+  <div class="controlers" id="controlers">
+    <div class="titles">
+      <h1>Complete Form</h1>
+      <i class="fa-solid fa-caret-down"></i>
+    </div>
+
+    <div class="inputs_group">
+      <div class="upload-container mb-2">
+        <h5>Upload Image</h5>
+        <label for="myImg">
+            <div class="upload">
+                <i class="fa-solid fa-image"></i>
+            </div>
+        </label>
+        <input type="file" id="myImg" accept="image/*" >
+      </div>
+
+      <input type="text" id="key" placeholder="Secret Key" >  
+      <select class="form-select" name="mode" id="Mood" >
+        <option value="" selected>Choose Mood</option>
+        <option value="CBC">CBC</option>
+        <option value="ECB">ECB</option>
+        <option value="CTR">CTR</option>
+      </select>
+    </div>
+    <div class="mt-5">
+      <button  id="encBtn">Encrypt Image</button>
+      <button  id="decBtn" class="btn2">Decrypt Image</button>
+    </div>
+
+  </div>
+
+
+  <div class="result_div" >
+    <div class="titles">
+      <h1 class="special_color">Encrypted & Decrypted</h1>
+      <i class="fa-solid fa-caret-down"></i>
+    </div>
+    <div id="imgContainer">
+      <div class="img_container" >
+        <h2 id="myMsg">No Image choosen yet!</h2>
+        <img id="resultImage" class="hidden">
+        <h3 id="succMsg">Image Encrypted Successfully </h3>
+     </div>
+     <a id="downloadLink" class="hidden mt-3" download>Download Image</a>
+     <span id="errorMessage" class="hidden"></span>
+    </div>
+
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/all.min.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
